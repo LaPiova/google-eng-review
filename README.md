@@ -14,20 +14,38 @@ fallback** so *any* language is covered — not just a fixed list.
 
 ## Install
 
-Clone the repo, then add it as a local plugin marketplace:
+Clone the repo first:
 
 ```bash
 git clone https://github.com/LaPiova/google-eng-review.git
 ```
 
-In Claude Code (run from the directory where you cloned it):
+There are two ways to load it — pick one.
+
+### A. Marketplace install (persistent)
+
+Installs the plugin so it's available in every future session. In Claude Code, from the
+directory where you cloned it:
 
 ```
 /plugin marketplace add ./google-eng-review
 /plugin install google-eng-review@eng-review
 ```
 
-Then reload Claude Code so the plugin loads.
+Then reload Claude Code.
+
+### B. Run from source — single directory, no marketplace (per session)
+
+Load the plugin directly from its directory for the current session only — no marketplace,
+nothing copied to the cache. Point `--plugin-dir` at the **plugin** directory (the one
+containing `.claude-plugin/plugin.json`):
+
+```bash
+claude --plugin-dir ./google-eng-review/plugins/google-eng-review
+```
+
+Handy for quick use or development; add a shell alias if you want it always on. (Validate
+without loading via `claude plugin validate ./google-eng-review/plugins/google-eng-review`.)
 
 ## Usage
 
@@ -66,16 +84,18 @@ and flip its row to Tier 1 in `references/language-index.md`. No code changes.
 ## Structure
 
 ```
-.claude-plugin/{plugin.json, marketplace.json}
-skills/review/
-  SKILL.md                       # forked review workflow + language resolution + output format
-  references/
-    reviewers-guide.md           # eng-practices reviewer guide (distilled)
-    authors-guide.md             # eng-practices CL-author guide (distilled)
-    universal-principles.md      # cross-language review dimensions
-    language-index.md            # language → resolution tier map
-    languages/{python,go,java,typescript,cpp}.md
-docs/DESIGN.md                   # design rationale
+.claude-plugin/marketplace.json    # marketplace catalog (lists the plugin)
+docs/DESIGN.md                     # design rationale
+plugins/google-eng-review/         # the plugin
+  .claude-plugin/plugin.json
+  skills/review/
+    SKILL.md                       # forked review workflow + language resolution + output format
+    references/
+      reviewers-guide.md           # eng-practices reviewer guide (distilled)
+      authors-guide.md             # eng-practices CL-author guide (distilled)
+      universal-principles.md      # cross-language review dimensions
+      language-index.md            # language → resolution tier map
+      languages/{python,go,java,typescript,cpp}.md
 ```
 
 ## Attribution & licensing

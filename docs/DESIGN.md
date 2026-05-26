@@ -50,25 +50,34 @@ skill's `disable-model-invocation: true` + `context: fork` pattern.
 
 ## Plugin structure
 
+The repo is a single-plugin **marketplace**: the catalog lives at the root and the plugin
+lives in a subdirectory (Claude Code requires a `"./..."` subdirectory source — a plugin at
+the marketplace root is not a supported source type).
+
 ```
-google-eng-review/
+google-eng-review/                       # marketplace root
 ├── .claude-plugin/
-│   └── plugin.json                  # manifest: name, version, description, author
-└── skills/
-    └── review/                      # → invoked /google-eng-review:review
-        ├── SKILL.md                 # forked entry: workflow + language resolution + output format
-        └── references/
-            #   files referenced from SKILL.md via ${CLAUDE_SKILL_DIR}/references/...
-            ├── reviewers-guide.md       # eng-practices reviewer guide, distilled
-            ├── authors-guide.md         # eng-practices CL-author guide, distilled
-            ├── universal-principles.md  # cross-language dimensions (see below)
-            ├── language-index.md        # language → {curated file | Google guide | idioms} map
-            └── languages/               # extensible CACHE of pre-distilled profiles (a seed, not the scope)
-                ├── python.md
-                ├── go.md
-                ├── java.md
-                ├── typescript.md
-                └── cpp.md
+│   └── marketplace.json                 # catalog; lists the plugin with source ./plugins/google-eng-review
+├── README.md  ·  LICENSE  ·  docs/DESIGN.md
+└── plugins/
+    └── google-eng-review/               # the plugin
+        ├── .claude-plugin/
+        │   └── plugin.json              # manifest: name, version, description, author
+        └── skills/
+            └── review/                  # → invoked /google-eng-review:review
+                ├── SKILL.md             # forked entry: workflow + language resolution + output format
+                └── references/
+                    #   read from SKILL.md via ${CLAUDE_SKILL_DIR}/references/...
+                    ├── reviewers-guide.md       # eng-practices reviewer guide, distilled
+                    ├── authors-guide.md         # eng-practices CL-author guide, distilled
+                    ├── universal-principles.md  # cross-language dimensions (see below)
+                    ├── language-index.md        # language → {curated file | Google guide | idioms} map
+                    └── languages/               # extensible CACHE of pre-distilled profiles (a seed, not the scope)
+                        ├── python.md
+                        ├── go.md
+                        ├── java.md
+                        ├── typescript.md
+                        └── cpp.md
 ```
 
 ### `reviewers-guide.md` (from `google/eng-practices`)
@@ -151,6 +160,10 @@ skill, adapted to this plugin's Google grounding:
 
 ## Invocation
 
+- **Two load paths** (see README): the marketplace (`/plugin marketplace add` +
+  `/plugin install`) for a persistent, shareable install; or `claude --plugin-dir
+  ./plugins/google-eng-review` to load straight from the directory for a single session
+  (no marketplace, nothing cached). Both work with the same nested layout.
 - Skill frontmatter: `disable-model-invocation: true` + `context: fork` (same as
   `senior-code-review`) — invoked explicitly via `/google-eng-review:review`, so it does not
   fight the existing `code-review` / `review` skills for model triggering.

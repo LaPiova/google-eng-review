@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "google-eng-review",
-      "source": ".",
+      "source": "./plugins/google-eng-review",
       "description": "Language-adaptive code review grounded in Google's engineering practices (google/eng-practices) and per-language style guides (google/styleguide)."
     }
   ]
