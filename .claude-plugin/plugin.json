@@ -1,0 +1,15 @@
+{
+  "name": "google-eng-review",
+  "version": "0.1.0",
+  "description": "Language-agnostic code review grounded in Google's engineering practices (google/eng-practices) for universal review judgment and google/styleguide for per-language best practices. Detects the language(s) in a change and applies the matching guidance, with a dynamic fallback so any language is covered.",
+  "author": {
+    "name": "piova.dev"
+  },
+  "keywords": [
+    "code-review",
+    "eng-practices",
+    "google",
+    "style-guide",
+    "multi-language"
+  ]
+}
