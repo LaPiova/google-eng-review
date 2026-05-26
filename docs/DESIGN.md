@@ -108,7 +108,8 @@ expected tooling (`ruff`/`black`, `gofmt`/`go vet`, `google-java-format`, `tsc`/
 
 ## Language resolution (language-agnostic core)
 
-1. Resolve the change set: slash-command argument, else default `git diff HEAD`.
+1. Resolve the change set: slash-command argument, else default to the **working tree**
+   (reconciling committed/staged/unstaged state — not a raw `git diff HEAD`).
 2. Detect language(s) by file extension + project manifests (`Cargo.toml`, `pyproject.toml`,
    `go.mod`, `package.json`, `pom.xml`, `CMakeLists.txt`, …).
 3. For **each** detected language, resolve a best-practice profile in order:
@@ -131,6 +132,22 @@ Reuses the proven `senior-code-review` structure:
 Every finding cites `file:line`, states *why* it matters, gives a concrete fix, and cites
 the originating principle/guide. Findings are *written* per Google's comment etiquette:
 courteous, reasoning explained, true nits prefixed `Nit:`.
+
+## Review discipline (ported from `senior-code-review`)
+
+The SKILL.md workflow folds in operational discipline proven out in the `senior-code-review`
+skill, adapted to this plugin's Google grounding:
+
+- **Phase 0a — reconcile git state** (committed / staged / working tree); default to the
+  **working tree**, not a raw `git diff HEAD` (which blends layers and yields phantom findings).
+- **Phase 0b — evidence over inference:** run the build/test/lint tools (taken from each
+  language profile's *Expected tooling*); label any claim that can't be run as *unverified*.
+- **Phase 0d — don't re-litigate** documented, deliberate decisions.
+- **Severity calibrated to evidence:** a Critical claiming build/test breakage must cite
+  command output, or it isn't Critical.
+- **Convergence:** a clean review may end in "approve / ship it"; empty 🟡/🟢 sections are a
+  valid result; report only what is actionable now; suppress speculative "if someone adds X"
+  findings. This operationalizes eng-practices' *Standard* (improve code health, not perfection).
 
 ## Invocation
 

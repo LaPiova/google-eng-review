@@ -1,7 +1,7 @@
 {
-  "name": "piova-plugins",
+  "name": "eng-review",
   "owner": {
-    "name": "piova.dev"
+    "name": "LaPiova"
   },
   "plugins": [
     {

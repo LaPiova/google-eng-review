@@ -12,24 +12,30 @@ engineering practices**.
 It detects the language(s) in a change and applies the matching guidance, with a **dynamic
 fallback** so *any* language is covered — not just a fixed list.
 
-## Install (local)
+## Install
 
-From the directory that contains this plugin:
+Clone the repo, then add it as a local plugin marketplace:
+
+```bash
+git clone https://github.com/LaPiova/google-eng-review.git
+```
+
+In Claude Code (run from the directory where you cloned it):
 
 ```
-/plugin marketplace add /Users/piova.dev/Projects/google-eng-review
-/plugin install google-eng-review@piova-plugins
+/plugin marketplace add ./google-eng-review
+/plugin install google-eng-review@eng-review
 ```
 
-Then restart / reload so the plugin loads.
+Then reload Claude Code so the plugin loads.
 
 ## Usage
 
 Plugin skills are namespaced, so invoke it as:
 
 ```
-/google-eng-review:review                 # reviews the current change set (git diff HEAD)
-/google-eng-review:review crates/core      # reviews changes under a path
+/google-eng-review:review                 # reviews the current working tree
+/google-eng-review:review src/             # reviews changes under a path
 /google-eng-review:review 42               # reviews PR #42 (uses `gh` if available)
 ```
 
